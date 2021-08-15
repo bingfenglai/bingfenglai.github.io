@@ -1,0 +1,742 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-16x16-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-minimal.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"code81192.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"manual","top_n_per_article":-1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="数组数组的声明1var name [SIZE] type  1var list [10] int  注意：  数组长度必须是一个常量值 数组长度是数组类型的一部分，也就是说下面a，b两个数组是不同类型的  12345var a [10] intvar b [6] int&#x2F;&#x2F;不能这样做，a、b是不同类型的数组a &#x3D; b  数组初始化方式一  指定数组长度初始化1var list1 &#x3D; [5] int">
+<meta property="og:type" content="article">
+<meta property="og:title" content="go语言入门之数组与切片">
+<meta property="og:url" content="https://code81192.github.io/2021/08/15/golang/04_go%E8%AF%AD%E8%A8%80%E5%85%A5%E9%97%A8_%E6%95%B0%E7%BB%84/index.html">
+<meta property="og:site_name" content="赖柄沣的技术博客">
+<meta property="og:description" content="数组数组的声明1var name [SIZE] type  1var list [10] int  注意：  数组长度必须是一个常量值 数组长度是数组类型的一部分，也就是说下面a，b两个数组是不同类型的  12345var a [10] intvar b [6] int&#x2F;&#x2F;不能这样做，a、b是不同类型的数组a &#x3D; b  数组初始化方式一  指定数组长度初始化1var list1 &#x3D; [5] int">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://code81192.github.io/2021/08/15/golang/04_go%E8%AF%AD%E8%A8%80%E5%85%A5%E9%97%A8_%E6%95%B0%E7%BB%84/04_go%E8%AF%AD%E8%A8%80%E5%85%A5%E9%97%A8_%E6%95%B0%E7%BB%84.assets/1601602182292.png">
+<meta property="article:published_time" content="2021-08-15T06:17:09.644Z">
+<meta property="article:modified_time" content="2021-08-15T07:08:58.370Z">
+<meta property="article:author" content="赖柄沣">
+<meta property="article:tag" content="golang">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://code81192.github.io/2021/08/15/golang/04_go%E8%AF%AD%E8%A8%80%E5%85%A5%E9%97%A8_%E6%95%B0%E7%BB%84/04_go%E8%AF%AD%E8%A8%80%E5%85%A5%E9%97%A8_%E6%95%B0%E7%BB%84.assets/1601602182292.png">
+
+<link rel="canonical" href="https://code81192.github.io/2021/08/15/golang/04_go%E8%AF%AD%E8%A8%80%E5%85%A5%E9%97%A8_%E6%95%B0%E7%BB%84/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>go语言入门之数组与切片 | 赖柄沣的技术博客</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/rss2.xml" title="赖柄沣的技术博客" type="application/rss+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+	<a href="https://code81192.github.io" class="github-corner" aria-label="View source on GitHub"><svg width="80" height="80" viewBox="0 0 250 250" style="fill:#151513; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">赖柄沣的技术博客</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-resources">
+
+    <a href="/resources/" rel="section"><i class="download fa-fw"></i>资源</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://code81192.github.io/2021/08/15/golang/04_go%E8%AF%AD%E8%A8%80%E5%85%A5%E9%97%A8_%E6%95%B0%E7%BB%84/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="赖柄沣">
+      <meta itemprop="description" content="赖柄沣的技术博客">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="赖柄沣的技术博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          go语言入门之数组与切片
+        </h1>
+
+        <div class="post-meta">
+		
+			
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2021-08-15 14:17:09 / 修改时间：15:08:58" itemprop="dateCreated datePublished" datetime="2021-08-15T14:17:09+08:00">2021-08-15</time>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="数组"><a href="#数组" class="headerlink" title="数组"></a>数组</h2><h3 id="数组的声明"><a href="#数组的声明" class="headerlink" title="数组的声明"></a>数组的声明</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">var name [SIZE] type</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> list [<span class="number">10</span>] <span class="keyword">int</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>注意</strong>：</p>
+<ol>
+<li>数组长度必须是一个常量值</li>
+<li>数组长度是数组类型的一部分，也就是说下面a，b两个数组是不同类型的</li>
+</ol>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> a [<span class="number">10</span>] <span class="keyword">int</span></span><br><span class="line"><span class="keyword">var</span> b [<span class="number">6</span>] <span class="keyword">int</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//不能这样做，a、b是不同类型的数组</span></span><br><span class="line">a = b</span><br></pre></td></tr></table></figure>
+
+<h3 id="数组初始化"><a href="#数组初始化" class="headerlink" title="数组初始化"></a>数组初始化</h3><h4 id="方式一-指定数组长度初始化"><a href="#方式一-指定数组长度初始化" class="headerlink" title="方式一  指定数组长度初始化"></a>方式一  指定数组长度初始化</h4><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> list1 = [<span class="number">5</span>] <span class="keyword">int</span> &#123;<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="方式二-推断长度初始化"><a href="#方式二-推断长度初始化" class="headerlink" title="方式二 推断长度初始化"></a>方式二 推断长度初始化</h4><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> list1 = [...] <span class="keyword">int</span> &#123;<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>&#125;</span><br><span class="line"><span class="comment">//或者</span></span><br><span class="line">list1 := [...] <span class="keyword">int</span> &#123;<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="多维数组的声明与初始化"><a href="#多维数组的声明与初始化" class="headerlink" title="多维数组的声明与初始化"></a>多维数组的声明与初始化</h3><h4 id="方式一"><a href="#方式一" class="headerlink" title="方式一"></a>方式一</h4><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> list = [<span class="number">2</span>][<span class="number">2</span>] <span class="keyword">int</span> &#123;</span><br><span class="line">   &#123;<span class="number">1</span>,<span class="number">2</span>&#125;,</span><br><span class="line">   &#123;<span class="number">1</span>,<span class="number">2</span>&#125;,</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="方式二"><a href="#方式二" class="headerlink" title="方式二"></a>方式二</h4><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> list = [...][<span class="number">2</span>] <span class="keyword">int</span> &#123;</span><br><span class="line">   &#123;<span class="number">1</span>,<span class="number">2</span>&#125;,</span><br><span class="line">   &#123;<span class="number">1</span>,<span class="number">2</span>&#125;,</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>注意</strong></p>
+<ol>
+<li>多维数组<strong>只有第一层</strong>可以使用<code>...</code>来让编译器推导数组长度。</li>
+</ol>
+<h3 id="数组的访问"><a href="#数组的访问" class="headerlink" title="数组的访问"></a>数组的访问</h3><p>与其他语言一样，数组可以通过下标来访问，例如<code>array[index]</code></p>
+<h3 id="数组的遍历"><a href="#数组的遍历" class="headerlink" title="数组的遍历"></a>数组的遍历</h3><p>在go语言中，数组有两种遍历方式，具体请看下面的demo</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> <span class="string">&quot;fmt&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/**遍历数组</span></span><br><span class="line"><span class="comment">  @author 赖柄沣 bingfengdev@aliyun.com</span></span><br><span class="line"><span class="comment">  @date 2020-10-01 10:57:25</span></span><br><span class="line"><span class="comment">  @version 1.0</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">   <span class="keyword">var</span> list =   [...] <span class="keyword">int</span>&#123;<span class="number">1</span>,<span class="number">2</span>,<span class="number">2</span>,<span class="number">4</span>,<span class="number">6</span>&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 遍历方式一</span></span><br><span class="line">   <span class="keyword">for</span> i:=<span class="number">0</span>; i&lt; <span class="built_in">len</span>(list); i++&#123;</span><br><span class="line">      fmt.Print(list[i])</span><br><span class="line">   &#125;</span><br><span class="line">fmt.Println()</span><br><span class="line"><span class="comment">// 遍历方式二</span></span><br><span class="line">   <span class="keyword">for</span> index := <span class="keyword">range</span> list &#123;</span><br><span class="line">      fmt.Print(list[index])</span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>输出</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">12246</span><br><span class="line">12246</span><br></pre></td></tr></table></figure>
+
+<h3 id="数组是值类型"><a href="#数组是值类型" class="headerlink" title="数组是值类型"></a>数组是值类型</h3><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> <span class="string">&quot;fmt&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/**数组是值类型证明</span></span><br><span class="line"><span class="comment">  @author 赖柄沣 bingfengdev@aliyun.com</span></span><br><span class="line"><span class="comment">  @date 2020-10-01 10:57:25</span></span><br><span class="line"><span class="comment">  @version 1.0</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">   <span class="keyword">var</span> list =   [...] <span class="keyword">int</span>&#123;<span class="number">1</span>,<span class="number">2</span>,<span class="number">2</span>,<span class="number">4</span>,<span class="number">6</span>&#125;</span><br><span class="line">   <span class="keyword">var</span> list2 = list</span><br><span class="line"></span><br><span class="line">   <span class="comment">/**</span></span><br><span class="line"><span class="comment">   改变list2的值，如果数组是引用类型，那么list2和list指向同一个地址</span></span><br><span class="line"><span class="comment">   如果list2发生改变，则list也会发生改变</span></span><br><span class="line"><span class="comment">   否则，数组是值类型</span></span><br><span class="line"><span class="comment">   赋值语句会将数组值拷贝一份给副本，则改变副本的值对原数组不会产生影响</span></span><br><span class="line"><span class="comment">    */</span></span><br><span class="line">   <span class="keyword">for</span> index := <span class="keyword">range</span> list2&#123;</span><br><span class="line">      list2[index] = <span class="number">1</span></span><br><span class="line"></span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">   fmt.Print(<span class="string">&quot;原数组&quot;</span>,list)</span><br><span class="line">   fmt.Println()</span><br><span class="line">   fmt.Print(<span class="string">&quot;副本&quot;</span>,list2)</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>输出</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">原数组[1 2 2 4 6]</span><br><span class="line">副本[1 1 1 1 1]</span><br></pre></td></tr></table></figure>
+
+<p><strong>注意：</strong></p>
+<ol>
+<li>数组支持 “==“、”!=” 操作符，因为内存总是被初始化过的。</li>
+<li><code>[n]*T</code>表示指针数组，<code>*[n]T</code>表示数组指针 。</li>
+</ol>
+<h2 id="切片类型"><a href="#切片类型" class="headerlink" title="切片类型"></a>切片类型</h2><h3 id="切片的定义"><a href="#切片的定义" class="headerlink" title="切片的定义"></a>切片的定义</h3><p>Go语言的切片（slice）切片是一个拥有相同类型元素的可变长度的序列，类似于Java的list。我们知道，数组的大小是一个确定值，因此，在某些需要动态地扩展容器大小的地方，数组将变得不太适用。而切片在数组的基础上做了一层封装，以便支持需要动态扩容的场景。</p>
+<p>Go语言中切片的内部结构包含底层数组的地址、切片的大小和切片的容量三个部分。</p>
+<h3 id="切片的声明"><a href="#切片的声明" class="headerlink" title="切片的声明"></a>切片的声明</h3><h4 id="方式一-1"><a href="#方式一-1" class="headerlink" title="方式一"></a>方式一</h4><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 声明一个int类型的切片</span></span><br><span class="line"><span class="keyword">var</span> i  [] <span class="keyword">int</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="方式二-从数组中获取切片（初始化操作）"><a href="#方式二-从数组中获取切片（初始化操作）" class="headerlink" title="方式二 从数组中获取切片（初始化操作）"></a>方式二 从数组中获取切片（初始化操作）</h4><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> <span class="string">&quot;fmt&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/**由数组产生切片</span></span><br><span class="line"><span class="comment">  @author 赖柄沣 bingfengdev@aliyun.com</span></span><br><span class="line"><span class="comment">  @date 2020-10-01 23:18:21</span></span><br><span class="line"><span class="comment">  @version 1.0</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	a := [...] <span class="keyword">int</span> &#123;<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>,<span class="number">7</span>,<span class="number">8</span>,<span class="number">9</span>,<span class="number">0</span>&#125;</span><br><span class="line">    <span class="comment">//注意，这里的切片截取是[)即左包含，而右不包含的</span></span><br><span class="line">	i := a[<span class="number">0</span>:<span class="number">4</span>]</span><br><span class="line">	<span class="keyword">for</span> index := <span class="keyword">range</span> i&#123;</span><br><span class="line">		fmt.Print(i[index])</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p><strong>输出</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1234</span><br></pre></td></tr></table></figure>
+
+<h4 id="方式三-通过make构造切片"><a href="#方式三-通过make构造切片" class="headerlink" title="方式三 通过make构造切片"></a>方式三 通过make构造切片</h4><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// capacity代表切片容量，这是一个可选参数</span></span><br><span class="line">slice = <span class="built_in">make</span>([]T, length, capacity)</span><br></pre></td></tr></table></figure>
+
+<p><strong>注意</strong>： </p>
+<ol>
+<li>切片在未初始化之前是一个空切片(nil)</li>
+<li>要检查切片是否为空，请始终使用<code>len(s) == 0</code>来判断，而不应该使用<code>s == nil</code>来判断。</li>
+<li>切片之间不能直接比较。切片唯一合法的比较操作是和<code>nil</code>比较。 一个<code>nil</code>值的切片并没有底层数组，一个<code>nil</code>值的切片的长度和容量都是0。但是我们不能说一个长度和容量都是0的切片一定是<code>nil</code></li>
+</ol>
+<p>举个例子：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="comment">/**切片比较演示</span></span><br><span class="line"><span class="comment">  @author 赖柄沣 bingfengdev@aliyun.com</span></span><br><span class="line"><span class="comment">  @date 2020-10-02 09:27:38</span></span><br><span class="line"><span class="comment">  @version 1.0</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">   <span class="keyword">var</span> a  [] <span class="keyword">int</span></span><br><span class="line">    b := [] <span class="keyword">int</span>&#123;&#125; <span class="comment">//或者 b := make([]int, 0)</span></span><br><span class="line">    <span class="built_in">println</span>(a==<span class="literal">nil</span>)</span><br><span class="line">    <span class="built_in">println</span>(b==<span class="literal">nil</span>)</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>输出</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">true</span><br><span class="line">false</span><br></pre></td></tr></table></figure>
+
+<h3 id="切片表达式"><a href="#切片表达式" class="headerlink" title="切片表达式"></a>切片表达式</h3><p>上一小节当中的从数组获取切片，也是切片表达式的一种，下面介绍其他几种写法。</p>
+<h4 id="省略开始位置"><a href="#省略开始位置" class="headerlink" title="省略开始位置"></a>省略开始位置</h4><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//这个数组a下面的例子中继续沿用</span></span><br><span class="line">a := [...] <span class="keyword">int</span> &#123;<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>,<span class="number">7</span>,<span class="number">8</span>,<span class="number">9</span>,<span class="number">0</span>&#125;</span><br><span class="line">i := a[:<span class="number">4</span>]</span><br></pre></td></tr></table></figure>
+
+<h4 id="省略结束位置"><a href="#省略结束位置" class="headerlink" title="省略结束位置"></a>省略结束位置</h4><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">i := a[<span class="number">4</span>:]</span><br></pre></td></tr></table></figure>
+
+<h4 id="开始、结束都省略"><a href="#开始、结束都省略" class="headerlink" title="开始、结束都省略"></a>开始、结束都省略</h4><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">i := a[:]</span><br></pre></td></tr></table></figure>
+
+<p><strong>提示：</strong> 切片表达式也可以用来操作切片，即上面的数组a也可以是一个切片。</p>
+<h3 id="len-和-cap-函数"><a href="#len-和-cap-函数" class="headerlink" title="len() 和 cap() 函数"></a>len() 和 cap() 函数</h3><p>切片是可索引的，并且可以由 len() 方法获取长度。</p>
+<p>切片提供了计算容量的方法 cap() 可以测量切片最长可以达到多少。</p>
+<p>请看下方的demo</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="comment">/**len()和cap()函数演示</span></span><br><span class="line"><span class="comment">  @author 赖柄沣 bingfengdev@aliyun.com</span></span><br><span class="line"><span class="comment">  @date 2020-10-01 23:18:21</span></span><br><span class="line"><span class="comment">  @version 1.0</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">   a := [...] <span class="keyword">int</span> &#123;<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>,<span class="number">7</span>,<span class="number">8</span>,<span class="number">9</span>,<span class="number">0</span>&#125;</span><br><span class="line">   i := a[<span class="number">2</span>:<span class="number">6</span>]</span><br><span class="line"></span><br><span class="line">   <span class="comment">//获取切片长度并打印</span></span><br><span class="line">   <span class="built_in">println</span>(<span class="built_in">len</span>(i))</span><br><span class="line"></span><br><span class="line">   <span class="comment">//获取切片容量并打印</span></span><br><span class="line">   <span class="built_in">println</span>(<span class="built_in">cap</span>(i))</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>输出</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">4</span><br><span class="line">8</span><br></pre></td></tr></table></figure>
+
+<p>看到这里，大家或许会对切片容量和长度这两个值感到疑惑。上文咱讲切片的定义时曾说到，切片是对数组的封装，内部结构包含底层数组的地址、切片的大小和切片的容量三个部分。</p>
+<p>切片的长度等于切片结束下标值减去切片开始下标值：</p>
+<p>length = endIndex-startIndex</p>
+<p>切片容量capacity等于底层数组长度减去开始下标值</p>
+<p>capacity = len(array) - startIndex</p>
+<p>所以上面的例子中的切片长度和容量分别是4和8。而底层数组的地址指向的就是切片开始下标对应值所在的内存地址。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**切片地层数组地址演示</span></span><br><span class="line"><span class="comment">  @author 赖柄沣 bingfengdev@aliyun.com</span></span><br><span class="line"><span class="comment">  @date 2020-10-02 09:27:38</span></span><br><span class="line"><span class="comment">  @version 1.0</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">   a := [...] <span class="keyword">int</span> &#123;<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>,<span class="number">7</span>,<span class="number">8</span>,<span class="number">9</span>,<span class="number">0</span>&#125;</span><br><span class="line">   i := a[<span class="number">2</span>:<span class="number">6</span>]</span><br><span class="line"></span><br><span class="line">   <span class="built_in">println</span>(&amp;i[<span class="number">0</span>])</span><br><span class="line">   <span class="built_in">println</span>(&amp;a[<span class="number">2</span>])</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>输出</strong></p>
+<p><img src="04_go%E8%AF%AD%E8%A8%80%E5%85%A5%E9%97%A8_%E6%95%B0%E7%BB%84.assets/1601602182292.png" alt="60160218229"></p>
+<p>这也再一次证明了切片是引用类型。</p>
+<h3 id="切片的直接赋值和copy-函数"><a href="#切片的直接赋值和copy-函数" class="headerlink" title="切片的直接赋值和copy()函数"></a>切片的直接赋值和copy()函数</h3><h4 id="直接赋值"><a href="#直接赋值" class="headerlink" title="直接赋值"></a>直接赋值</h4><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="comment">/**切片的赋值</span></span><br><span class="line"><span class="comment">  @author 赖柄沣 bingfengdev@aliyun.com</span></span><br><span class="line"><span class="comment">  @date 2020-10-02 09:27:38</span></span><br><span class="line"><span class="comment">  @version 1.0</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">   a := [...] <span class="keyword">int</span> &#123;<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>,<span class="number">7</span>,<span class="number">8</span>,<span class="number">9</span>,<span class="number">0</span>&#125;</span><br><span class="line">   i := a[<span class="number">2</span>:<span class="number">6</span>]</span><br><span class="line">   <span class="comment">//将i直接赋值给j，i、j将共用一个底层数组a</span></span><br><span class="line">   j := i</span><br><span class="line">   <span class="built_in">println</span>(&amp;i)</span><br><span class="line">   <span class="built_in">println</span>(&amp;j)</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>注意</strong></p>
+<ol>
+<li>对切片i的操作将影响到切片j</li>
+</ol>
+<p><strong>举个例子</strong></p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="comment">/**切片的赋值</span></span><br><span class="line"><span class="comment">  @author 赖柄沣 bingfengdev@aliyun.com</span></span><br><span class="line"><span class="comment">  @date 2020-10-02 09:27:38</span></span><br><span class="line"><span class="comment">  @version 1.0</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">   a := [...] <span class="keyword">int</span> &#123;<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>,<span class="number">7</span>,<span class="number">8</span>,<span class="number">9</span>,<span class="number">0</span>&#125;</span><br><span class="line">   i := a[<span class="number">2</span>:<span class="number">6</span>]</span><br><span class="line">   <span class="comment">//将i直接赋值给j，i、j将共用一个底层数组a</span></span><br><span class="line">   j := i</span><br><span class="line"></span><br><span class="line">   i[<span class="number">0</span>] = <span class="number">6</span></span><br><span class="line">   <span class="built_in">println</span>(j[<span class="number">0</span>])</span><br><span class="line">   <span class="built_in">println</span>(a[<span class="number">2</span>])</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>输出</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">6</span><br><span class="line">6</span><br></pre></td></tr></table></figure>
+
+<p>这不难理解，因为i、j都是一个保持对数组a的引用，因此，改变i的值实际上改变的是数组a的值，所以j也会受到影响。</p>
+<h4 id="copy-函数"><a href="#copy-函数" class="headerlink" title="copy()函数"></a>copy()函数</h4><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="comment">/**copy（）函数的使用</span></span><br><span class="line"><span class="comment">  @author 赖柄沣 bingfengdev@aliyun.com</span></span><br><span class="line"><span class="comment">  @date 2020-10-02 09:27:38</span></span><br><span class="line"><span class="comment">  @version 1.0</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">   a := [...] <span class="keyword">int</span> &#123;<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>,<span class="number">7</span>,<span class="number">8</span>,<span class="number">9</span>,<span class="number">0</span>&#125;</span><br><span class="line">   i := a[<span class="number">2</span>:<span class="number">6</span>]</span><br><span class="line">   j := <span class="built_in">make</span>([]<span class="keyword">int</span>,<span class="built_in">len</span>(i),<span class="built_in">cap</span>(i))</span><br><span class="line">   <span class="built_in">copy</span>(j,i)</span><br><span class="line">   i[<span class="number">0</span>] = <span class="number">6</span></span><br><span class="line">   <span class="built_in">println</span>(j[<span class="number">0</span>])</span><br><span class="line">   <span class="built_in">println</span>(a[<span class="number">2</span>])</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>输出</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">3</span><br><span class="line">6</span><br></pre></td></tr></table></figure>
+
+<p>显然，这里的i、j所对应的底层数组不是同一个。</p>
+<h3 id="append-函数的使用"><a href="#append-函数的使用" class="headerlink" title="append()函数的使用"></a>append()函数的使用</h3><h4 id="为切片添加新元素"><a href="#为切片添加新元素" class="headerlink" title="为切片添加新元素"></a>为切片添加新元素</h4><p>Go语言的内建函数<code>append()</code>可以为切片动态添加元素。 可以一次添加一个元素，可以添加多个元素，也可以添加另一个切片中的元素（切片参数后面加…）</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">&quot;fmt&quot;</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="comment">/**append()函数的使用</span></span><br><span class="line"><span class="comment">  @author 赖柄沣 bingfengdev@aliyun.com</span></span><br><span class="line"><span class="comment">  @date 2020-10-02 09:59:36</span></span><br><span class="line"><span class="comment">  @version 1.0</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	<span class="comment">//声明一个int类型的切片</span></span><br><span class="line">	<span class="keyword">var</span> a [] <span class="keyword">int</span></span><br><span class="line">	b := [] <span class="keyword">int</span>&#123;<span class="number">5</span>,<span class="number">6</span>,<span class="number">7</span>&#125;</span><br><span class="line">	<span class="comment">//向切片a中追加元素</span></span><br><span class="line">	a = <span class="built_in">append</span>(a, <span class="number">1</span>,<span class="number">2</span>,<span class="number">4</span>)</span><br><span class="line">	<span class="comment">//将切片a的元素追加切片b</span></span><br><span class="line">	b  = <span class="built_in">append</span>(b,a...)</span><br><span class="line">	</span><br><span class="line">	fmt.Println(a)</span><br><span class="line">	fmt.Println(b)</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>输出</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[1 2 4]</span><br><span class="line">[5 6 7 1 2 4]</span><br></pre></td></tr></table></figure>
+
+<h4 id="移除元素"><a href="#移除元素" class="headerlink" title="移除元素"></a>移除元素</h4><p>在go语言当中，目前并没有为切片移除元素的函数，因此我们使用append()来做移除操作。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> <span class="string">&quot;fmt&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/**切片移除元素</span></span><br><span class="line"><span class="comment">  @author 赖柄沣 bingfengdev@aliyun.com</span></span><br><span class="line"><span class="comment">  @date 2020-10-02 10:23:51</span></span><br><span class="line"><span class="comment">  @version 1.0</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">   a := [] <span class="keyword">int</span>&#123;<span class="number">5</span>,<span class="number">6</span>,<span class="number">7</span>&#125;</span><br><span class="line"></span><br><span class="line">   <span class="comment">//删除索引为1的元素</span></span><br><span class="line">   a = <span class="built_in">append</span>(a[:<span class="number">1</span>],a[<span class="number">2</span>:]...)</span><br><span class="line"></span><br><span class="line">   fmt.Println(a)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>输出</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[5 7]</span><br></pre></td></tr></table></figure>
+
+<p><strong>提示</strong> </p>
+<p>每个切片会指向一个底层数组，这个数组的容量够用就添加新增元素。当底层数组不能容纳新增的元素时，切片就会自动按照一定的策略进行“扩容”，此时该切片指向的底层数组就会更换。“扩容”操作往往发生在<code>append()</code>函数调用时，所以我们通常都需要用原变量接收append函数的返回值。</p>
+<h3 id="切片的排序"><a href="#切片的排序" class="headerlink" title="切片的排序"></a>切片的排序</h3><h4 id="对int类型的元素排序"><a href="#对int类型的元素排序" class="headerlink" title="对int类型的元素排序"></a>对int类型的元素排序</h4><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">   <span class="string">&quot;fmt&quot;</span></span><br><span class="line">   <span class="string">&quot;sort&quot;</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="comment">/**切片排序</span></span><br><span class="line"><span class="comment">  @author 赖柄沣 bingfengdev@aliyun.com</span></span><br><span class="line"><span class="comment">  @date 2020-10-02 10:23:51</span></span><br><span class="line"><span class="comment">  @version 1.0</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">   a := [] <span class="keyword">int</span>&#123;<span class="number">9</span>,<span class="number">6</span>,<span class="number">7</span>&#125;</span><br><span class="line"></span><br><span class="line">   <span class="comment">//对int类型的元素进行排序</span></span><br><span class="line">   sort.Ints(a)</span><br><span class="line"></span><br><span class="line">   fmt.Println(a)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>输出</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[6 7 9]</span><br></pre></td></tr></table></figure>
+
+<h4 id="对string类型的元素排序"><a href="#对string类型的元素排序" class="headerlink" title="对string类型的元素排序"></a>对string类型的元素排序</h4><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">   <span class="string">&quot;fmt&quot;</span></span><br><span class="line">   <span class="string">&quot;sort&quot;</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="comment">/**切片排序</span></span><br><span class="line"><span class="comment">  @author 赖柄沣 bingfengdev@aliyun.com</span></span><br><span class="line"><span class="comment">  @date 2020-10-02 10:23:51</span></span><br><span class="line"><span class="comment">  @version 1.0</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">   s := [] <span class="keyword">string</span> &#123;<span class="string">&quot;zhangsan&quot;</span>,<span class="string">&quot;wangwu&quot;</span>,<span class="string">&quot;lisi&quot;</span>,<span class="string">&quot;zhaoliu&quot;</span>,<span class="string">&quot;suiqi&quot;</span>,<span class="string">&quot;songjiu&quot;</span>&#125;</span><br><span class="line">   sort.Strings(s)</span><br><span class="line">   fmt.Println(s)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>输出</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[lisi songjiu suiqi wangwu zhangsan zhaoliu]</span><br></pre></td></tr></table></figure>
+
+<h3 id="查找元素位置"><a href="#查找元素位置" class="headerlink" title="查找元素位置"></a>查找元素位置</h3><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">&quot;fmt&quot;</span></span><br><span class="line">	<span class="string">&quot;sort&quot;</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="comment">/**切片查找元素位置</span></span><br><span class="line"><span class="comment">  @author 赖柄沣 bingfengdev@aliyun.com</span></span><br><span class="line"><span class="comment">  @date 2020-10-02 10:23:51</span></span><br><span class="line"><span class="comment">  @version 1.0</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	s := [] <span class="keyword">string</span> &#123;<span class="string">&quot;张三&quot;</span>,<span class="string">&quot;王五&quot;</span>,<span class="string">&quot;李四&quot;</span>,<span class="string">&quot;赵六&quot;</span>,<span class="string">&quot;孙七&quot;</span>,<span class="string">&quot;宋九&quot;</span>&#125;</span><br><span class="line">	sort.Strings(s)</span><br><span class="line">	fmt.Println(s)</span><br><span class="line">	a := sort.SearchStrings(s,<span class="string">&quot;李四&quot;</span>)</span><br><span class="line">	fmt.Println(s[a])</span><br><span class="line">	fmt.Println(a)</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>输出</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[张三 王五 李四 赵六 孙七 宋九]</span><br><span class="line">王五</span><br><span class="line">1</span><br></pre></td></tr></table></figure>
+
+<p><strong>注意</strong></p>
+<ol>
+<li>查找之前需要先对切片进行排序</li>
+</ol>
+<h3 id="切片的扩容策略"><a href="#切片的扩容策略" class="headerlink" title="切片的扩容策略"></a>切片的扩容策略</h3><p>以下源码摘自<code>/src/runtime/slice.go</code></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">func growslice(et *_type, old slice, cap int) slice &#123;</span><br><span class="line">   //省略了不影响理解的部分代码</span><br><span class="line"></span><br><span class="line">   newcap := old.cap</span><br><span class="line">   doublecap := newcap + newcap</span><br><span class="line">   if cap &gt; doublecap &#123;</span><br><span class="line">      newcap = cap</span><br><span class="line">   &#125; else &#123;</span><br><span class="line">      if old.len &lt; 1024 &#123;</span><br><span class="line">         newcap = doublecap</span><br><span class="line">      &#125; else &#123;</span><br><span class="line">         // Check 0 &lt; newcap to detect overflow</span><br><span class="line">         // and prevent an infinite loop.</span><br><span class="line">         for 0 &lt; newcap &amp;&amp; newcap &lt; cap &#123;</span><br><span class="line">            newcap += newcap / 4</span><br><span class="line">         &#125;</span><br><span class="line">         // Set newcap to the requested cap when</span><br><span class="line">         // the newcap calculation overflowed.</span><br><span class="line">         if newcap &lt;= 0 &#123;</span><br><span class="line">            newcap = cap</span><br><span class="line">         &#125;</span><br><span class="line">      &#125;</span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">  //省略了不影响理解的部分代码</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>分析：</p>
+<ol>
+<li>首先判断，如果新申请容量（cap）大于2倍的旧容量（old.cap），最终容量（newcap）就是新申请的容量（cap）；</li>
+<li>否则，如果旧切片的长度小于1024，则最终容量(newcap)就是旧容量(old.cap)的两倍，即（newcap=doublecap）；</li>
+<li>否则，如果旧切片长度大于等于1024，则最终容量（newcap）从旧容量（old.cap）开始循环增加原来的1/4，即（newcap=old.cap,for {newcap += newcap/4}）直到最终容量（newcap）大于等于新申请的容量(cap)，即（newcap &gt;= cap）；</li>
+<li>如果最终容量（cap）计算值溢出，则最终容量（cap）就是新申请容量（cap）。</li>
+</ol>
+<p>注意：</p>
+<p>切片扩容还会根据切片中元素的类型不同而做不同的处理，比如<code>int</code>和<code>string</code>类型的处理方式就不一样。</p>
+
+    </div>
+
+    
+    
+    
+	 
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>赖柄沣
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://code81192.github.io/2021/08/15/golang/04_go%E8%AF%AD%E8%A8%80%E5%85%A5%E9%97%A8_%E6%95%B0%E7%BB%84/" title="go语言入门之数组与切片">https://code81192.github.io/2021/08/15/golang/04_go语言入门_数组/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+        
+
+  <div class="followme">
+    <p>欢迎关注我的其它发布渠道</p>
+
+    <div class="social-list">
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="https://juejin.cn/user/3148605263457992/columns">
+            <span class="icon">
+              <i class="fab fa-juejin"></i>
+            </span>
+
+            <span class="label">掘金</span>
+          </a>
+        </div>
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="/atom.xml">
+            <span class="icon">
+              <i class="fa fa-rss"></i>
+            </span>
+
+            <span class="label">RSS</span>
+          </a>
+        </div>
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="https://www.cnblogs.com/bingfengdev/">
+            <span class="icon">
+              <i class="fab fa-cnblogs"></i>
+            </span>
+
+            <span class="label">博客园</span>
+          </a>
+        </div>
+    </div>
+  </div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/golang/" rel="tag"># golang</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/08/15/golang/02_go%E8%AF%AD%E8%A8%80%E5%85%A5%E9%97%A8%EF%BC%88%E4%B8%8B%EF%BC%89/" rel="prev" title="go语言入门（下）">
+      <i class="fa fa-chevron-left"></i> go语言入门（下）
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2021/08/15/golang/03_go%E8%AF%AD%E8%A8%80%E6%B5%81%E7%A8%8B%E6%8E%A7%E5%88%B6/" rel="next" title="Go语言入门之流程控制----练气三层">
+      Go语言入门之流程控制----练气三层 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B0%E7%BB%84"><span class="nav-number">1.</span> <span class="nav-text">数组</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%95%B0%E7%BB%84%E7%9A%84%E5%A3%B0%E6%98%8E"><span class="nav-number">1.1.</span> <span class="nav-text">数组的声明</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%95%B0%E7%BB%84%E5%88%9D%E5%A7%8B%E5%8C%96"><span class="nav-number">1.2.</span> <span class="nav-text">数组初始化</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%96%B9%E5%BC%8F%E4%B8%80-%E6%8C%87%E5%AE%9A%E6%95%B0%E7%BB%84%E9%95%BF%E5%BA%A6%E5%88%9D%E5%A7%8B%E5%8C%96"><span class="nav-number">1.2.1.</span> <span class="nav-text">方式一  指定数组长度初始化</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%96%B9%E5%BC%8F%E4%BA%8C-%E6%8E%A8%E6%96%AD%E9%95%BF%E5%BA%A6%E5%88%9D%E5%A7%8B%E5%8C%96"><span class="nav-number">1.2.2.</span> <span class="nav-text">方式二 推断长度初始化</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A4%9A%E7%BB%B4%E6%95%B0%E7%BB%84%E7%9A%84%E5%A3%B0%E6%98%8E%E4%B8%8E%E5%88%9D%E5%A7%8B%E5%8C%96"><span class="nav-number">1.3.</span> <span class="nav-text">多维数组的声明与初始化</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%96%B9%E5%BC%8F%E4%B8%80"><span class="nav-number">1.3.1.</span> <span class="nav-text">方式一</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%96%B9%E5%BC%8F%E4%BA%8C"><span class="nav-number">1.3.2.</span> <span class="nav-text">方式二</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%95%B0%E7%BB%84%E7%9A%84%E8%AE%BF%E9%97%AE"><span class="nav-number">1.4.</span> <span class="nav-text">数组的访问</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%95%B0%E7%BB%84%E7%9A%84%E9%81%8D%E5%8E%86"><span class="nav-number">1.5.</span> <span class="nav-text">数组的遍历</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%95%B0%E7%BB%84%E6%98%AF%E5%80%BC%E7%B1%BB%E5%9E%8B"><span class="nav-number">1.6.</span> <span class="nav-text">数组是值类型</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%87%E7%89%87%E7%B1%BB%E5%9E%8B"><span class="nav-number">2.</span> <span class="nav-text">切片类型</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%87%E7%89%87%E7%9A%84%E5%AE%9A%E4%B9%89"><span class="nav-number">2.1.</span> <span class="nav-text">切片的定义</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%87%E7%89%87%E7%9A%84%E5%A3%B0%E6%98%8E"><span class="nav-number">2.2.</span> <span class="nav-text">切片的声明</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%96%B9%E5%BC%8F%E4%B8%80-1"><span class="nav-number">2.2.1.</span> <span class="nav-text">方式一</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%96%B9%E5%BC%8F%E4%BA%8C-%E4%BB%8E%E6%95%B0%E7%BB%84%E4%B8%AD%E8%8E%B7%E5%8F%96%E5%88%87%E7%89%87%EF%BC%88%E5%88%9D%E5%A7%8B%E5%8C%96%E6%93%8D%E4%BD%9C%EF%BC%89"><span class="nav-number">2.2.2.</span> <span class="nav-text">方式二 从数组中获取切片（初始化操作）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%96%B9%E5%BC%8F%E4%B8%89-%E9%80%9A%E8%BF%87make%E6%9E%84%E9%80%A0%E5%88%87%E7%89%87"><span class="nav-number">2.2.3.</span> <span class="nav-text">方式三 通过make构造切片</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%87%E7%89%87%E8%A1%A8%E8%BE%BE%E5%BC%8F"><span class="nav-number">2.3.</span> <span class="nav-text">切片表达式</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%9C%81%E7%95%A5%E5%BC%80%E5%A7%8B%E4%BD%8D%E7%BD%AE"><span class="nav-number">2.3.1.</span> <span class="nav-text">省略开始位置</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%9C%81%E7%95%A5%E7%BB%93%E6%9D%9F%E4%BD%8D%E7%BD%AE"><span class="nav-number">2.3.2.</span> <span class="nav-text">省略结束位置</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%BC%80%E5%A7%8B%E3%80%81%E7%BB%93%E6%9D%9F%E9%83%BD%E7%9C%81%E7%95%A5"><span class="nav-number">2.3.3.</span> <span class="nav-text">开始、结束都省略</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#len-%E5%92%8C-cap-%E5%87%BD%E6%95%B0"><span class="nav-number">2.4.</span> <span class="nav-text">len() 和 cap() 函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%87%E7%89%87%E7%9A%84%E7%9B%B4%E6%8E%A5%E8%B5%8B%E5%80%BC%E5%92%8Ccopy-%E5%87%BD%E6%95%B0"><span class="nav-number">2.5.</span> <span class="nav-text">切片的直接赋值和copy()函数</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%9B%B4%E6%8E%A5%E8%B5%8B%E5%80%BC"><span class="nav-number">2.5.1.</span> <span class="nav-text">直接赋值</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#copy-%E5%87%BD%E6%95%B0"><span class="nav-number">2.5.2.</span> <span class="nav-text">copy()函数</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#append-%E5%87%BD%E6%95%B0%E7%9A%84%E4%BD%BF%E7%94%A8"><span class="nav-number">2.6.</span> <span class="nav-text">append()函数的使用</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%B8%BA%E5%88%87%E7%89%87%E6%B7%BB%E5%8A%A0%E6%96%B0%E5%85%83%E7%B4%A0"><span class="nav-number">2.6.1.</span> <span class="nav-text">为切片添加新元素</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%A7%BB%E9%99%A4%E5%85%83%E7%B4%A0"><span class="nav-number">2.6.2.</span> <span class="nav-text">移除元素</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%87%E7%89%87%E7%9A%84%E6%8E%92%E5%BA%8F"><span class="nav-number">2.7.</span> <span class="nav-text">切片的排序</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AF%B9int%E7%B1%BB%E5%9E%8B%E7%9A%84%E5%85%83%E7%B4%A0%E6%8E%92%E5%BA%8F"><span class="nav-number">2.7.1.</span> <span class="nav-text">对int类型的元素排序</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AF%B9string%E7%B1%BB%E5%9E%8B%E7%9A%84%E5%85%83%E7%B4%A0%E6%8E%92%E5%BA%8F"><span class="nav-number">2.7.2.</span> <span class="nav-text">对string类型的元素排序</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9F%A5%E6%89%BE%E5%85%83%E7%B4%A0%E4%BD%8D%E7%BD%AE"><span class="nav-number">2.8.</span> <span class="nav-text">查找元素位置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%87%E7%89%87%E7%9A%84%E6%89%A9%E5%AE%B9%E7%AD%96%E7%95%A5"><span class="nav-number">2.9.</span> <span class="nav-text">切片的扩容策略</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="赖柄沣"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">赖柄沣</p>
+  <div class="site-description" itemprop="description">赖柄沣的技术博客</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">6</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/code81192" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;code81192" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:bingfengdev@aliyun.com" title="E-Mail → mailto:bingfengdev@aliyun.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+      链接
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://juejin.cn/user/3148605263457992/columns" title="https:&#x2F;&#x2F;juejin.cn&#x2F;user&#x2F;3148605263457992&#x2F;columns" rel="noopener" target="_blank">我的掘金主页</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://www.cnblogs.com/bingfengdev/" title="https:&#x2F;&#x2F;www.cnblogs.com&#x2F;bingfengdev&#x2F;" rel="noopener" target="_blank">博客园</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2021-8 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">赖柄沣</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+<div class="theme-info">
+  <div class="powered-by"></div>
+  <span class="post-count">博客全站共8.9k字</span>
+</div>
+
+
+
+
+    <script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+    <span id="busuanzi_container_site_pv">总访问量<span id="busuanzi_value_site_pv"></span>次</span>
+    <span class="post-meta-divider">|</span>
+    <span id="busuanzi_container_site_uv">总访客数<span id="busuanzi_value_site_uv"></span>人</span>
+    <span class="post-meta-divider">|</span>
+<!-- 不蒜子计数初始值纠正 -->
+<script>
+$(document).ready(function() {
+
+    var int = setInterval(fixCount, 50);  // 50ms周期检测函数
+    var countOffset = 0;  // 初始化首次数据
+
+    function fixCount() {            
+       if (document.getElementById("busuanzi_container_site_pv").style.display != "none")
+        {
+            $("#busuanzi_value_site_pv").html(parseInt($("#busuanzi_value_site_pv").html()) + countOffset); 
+            clearInterval(int);
+        }                  
+        if ($("#busuanzi_container_site_pv").css("display") != "none")
+        {
+            $("#busuanzi_value_site_uv").html(parseInt($("#busuanzi_value_site_uv").html()) + countOffset); // 加上初始数据 
+            clearInterval(int); // 停止检测
+        }  
+    }
+       	
+});
+</script> 
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  
+  <script color='0,0,255' opacity='0.5' zIndex='-1' count='99' src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+  <script defer src="/lib/three/three.min.js"></script>
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
