@@ -30,7 +30,7 @@
 <meta property="og:description" content="写在前面之前说好的每周更新一次技术博客，但是由于种种原因一直推迟到现在… …🐶 有一句话，我一直把它当作我的座右铭，写在这里与诸君共勉：业精于勤荒于嬉，行成于思毁于随。 废话不多说，开始我们今天的学习。 什么是mapmap是一种无序的、基于键值对&lt;key,value&gt;的数据结构，又称之为字段或关联数组。 在Go语言当中，map是引用类型，必须初始化后才能使用，其内部也是使用散列表来实">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2021-08-22T16:36:44.541Z">
-<meta property="article:modified_time" content="2021-08-22T16:37:43.456Z">
+<meta property="article:modified_time" content="2021-09-09T15:53:53.240Z">
 <meta property="article:author" content="赖柄沣">
 <meta property="article:tag" content="golang">
 <meta name="twitter:card" content="summary">
@@ -226,10 +226,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2021-08-23 00:36:44 / 修改时间：00:37:43" itemprop="dateCreated datePublished" datetime="2021-08-23T00:36:44+08:00">2021-08-23</time>
+              <time title="创建时间：2021-08-23 00:36:44" itemprop="dateCreated datePublished" datetime="2021-08-23T00:36:44+08:00">2021-08-23</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-09-09 23:53:53" itemprop="dateModified" datetime="2021-09-09T23:53:53+08:00">2021-09-09</time>
+              </span>
 
           
             <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
@@ -257,6 +263,8 @@
 <h2 id="map的定义与使用"><a href="#map的定义与使用" class="headerlink" title="map的定义与使用"></a>map的定义与使用</h2><h3 id="第一种方式：通过map关键字定义"><a href="#第一种方式：通过map关键字定义" class="headerlink" title="第一种方式：通过map关键字定义"></a>第一种方式：通过map关键字定义</h3><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// var mapname map[keytype]valuetype</span></span><br><span class="line"><span class="keyword">var</span> <span class="keyword">map</span> <span class="keyword">map</span>[<span class="keyword">string</span>]<span class="keyword">string</span></span><br></pre></td></tr></table></figure>
 
 <p>其中：</p>
+<span id="more"></span>
+
 <ol>
 <li><code>mapName</code> 为变量名</li>
 <li><code>keyType</code> 为key的数据类型。key的数据类型可以是bool、数字、string、指针、channel、接口、结构体和数组</li>
