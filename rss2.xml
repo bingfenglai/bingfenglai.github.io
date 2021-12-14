@@ -9,11 +9,11 @@
     <atom:link href="https://bingfenglai.github.io/rss2.xml" rel="self" type="application/rss+xml"/>
     
     <description>赖柄沣的技术博客</description>
-    <pubDate>Sun, 12 Dec 2021 11:06:44 GMT</pubDate>
+    <pubDate>Tue, 14 Dec 2021 16:13:18 GMT</pubDate>
     <generator>http://hexo.io/</generator>
     
     <item>
-      <title>golang中的协程与通道（上）</title>
+      <title>golang中的协程与通道（一）</title>
       <link>https://bingfenglai.github.io/2021/12/12/golang/15_golang%E4%B8%AD%E7%9A%84%E5%8D%8F%E7%A8%8B%E4%B8%8E%E9%80%9A%E9%81%93/</link>
       <guid>https://bingfenglai.github.io/2021/12/12/golang/15_golang%E4%B8%AD%E7%9A%84%E5%8D%8F%E7%A8%8B%E4%B8%8E%E9%80%9A%E9%81%93/</guid>
       <pubDate>Sun, 12 Dec 2021 11:00:44 GMT</pubDate>
