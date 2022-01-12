@@ -198,6 +198,88 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://bingfenglai.github.io/2021/09/07/golang/07_go%E8%AF%AD%E8%A8%80%E5%85%A5%E9%97%A8_%E7%BB%93%E6%9E%84%E4%BD%93/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="赖柄沣">
+      <meta itemprop="description" content="赖柄沣的技术博客">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="赖柄沣的技术博客">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/09/07/golang/07_go%E8%AF%AD%E8%A8%80%E5%85%A5%E9%97%A8_%E7%BB%93%E6%9E%84%E4%BD%93/" class="post-title-link" itemprop="url">go语言入门学习之结构体（struct）</a>
+        </h2>
+
+        <div class="post-meta">
+		
+			
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-09-07 22:57:26" itemprop="dateCreated datePublished" datetime="2021-09-07T22:57:26+08:00">2021-09-07</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-12-08 16:50:03" itemprop="dateModified" datetime="2021-12-08T16:50:03+08:00">2021-12-08</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p><img src="https://raw.githubusercontent.com/code81192/art-demo/master/art-img/girl-2366438_1920.jpg" alt="girl-2366438_1920"></p>
+<h2 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h2><p>在上一文<a href="https://bingfenglai.github.io/2021/09/05/golang/06_go%E8%AF%AD%E8%A8%80%E5%85%A5%E9%97%A8_%E5%87%BD%E6%95%B0/">《Golang入门学习之函数》</a>当中，我们学习了Golang当中函数的用法。接下来，我们将一起来学习Golang的结构体。</p>
+<h2 id="结构体的定义"><a href="#结构体的定义" class="headerlink" title="结构体的定义"></a>结构体的定义</h2><p><code>结构体</code>（struct）类似于其他面向对象当中类（class）的概念，但它和类有着明显的不同。结构体是<code>复合类型</code>（composite types），它由一系列属性组成，这些属性对应着不同的值与类型。组成结构体类型的那些数据称为<code>字段</code>(fields).</p>
+<p>Golang通过结构体的形式支持用户自定义类型，或者叫定制类型。</p>
+<p>定义方式：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> StructName <span class="keyword">struct</span> &#123;</span><br><span class="line">	field1 type1</span><br><span class="line">	field2 type2</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="结构体的实例化"><a href="#结构体的实例化" class="headerlink" title="结构体的实例化"></a>结构体的实例化</h2>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2021/09/07/golang/07_go%E8%AF%AD%E8%A8%80%E5%85%A5%E9%97%A8_%E7%BB%93%E6%9E%84%E4%BD%93/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+	 
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://bingfenglai.github.io/2021/09/05/golang/06_go%E8%AF%AD%E8%A8%80%E5%85%A5%E9%97%A8_%E5%87%BD%E6%95%B0/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -888,7 +970,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">18</span>
+          <span class="site-state-item-count">19</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -943,7 +1025,7 @@
 <div class="copyright">
   
   &copy; 2021-8 – 
-  <span itemprop="copyrightYear">2021</span>
+  <span itemprop="copyrightYear">2022</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
@@ -954,7 +1036,7 @@
 
 <div class="theme-info">
   <div class="powered-by"></div>
-  <span class="post-count">博客全站共30.6k字</span>
+  <span class="post-count">博客全站共34k字</span>
 </div>
 
 
